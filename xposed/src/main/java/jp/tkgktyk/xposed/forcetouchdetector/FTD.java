@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -60,8 +61,11 @@ public class FTD {
 
     // key actions
     public static final String ACTION_BACK = PREFIX_ACTION + "BACK";
+    public static final String ACTION_BACK_LONG = PREFIX_ACTION + "BACK_LONG";
     public static final String ACTION_HOME = PREFIX_ACTION + "HOME";
+    public static final String ACTION_HOME_LONG = PREFIX_ACTION + "HOME_LONG";
     public static final String ACTION_RECENTS = PREFIX_ACTION + "RECENTS";
+    public static final String ACTION_RECENTS_LONG = PREFIX_ACTION + "RECENTS_LONG";
     public static final String ACTION_FORWARD = PREFIX_ACTION + "FORWARD";
     public static final String ACTION_REFRESH = PREFIX_ACTION + "REFRESH";
     public static final String ACTION_SCROLL_UP_GLOBAL = PREFIX_ACTION + "SCROLL_UP_GLOBAL";
@@ -72,6 +76,8 @@ public class FTD {
     public static final String ACTION_LOCK_SCREEN = PREFIX_ACTION + "LOCK_SCREEN";
     public static final String ACTION_LAST_APP = PREFIX_ACTION + "LAST_APP";
     public static final String ACTION_MENU = PREFIX_ACTION + "MENU";
+    public static final String ACTION_ASSIST = PREFIX_ACTION + "ASSIST";
+    public static final String ACTION_VOICE_ASSIST = PREFIX_ACTION + "VOICE_ASSIST";
     public static final String ACTION_BRIGHTNESS_UP = PREFIX_ACTION + "BRIGHTNESS_UP";
     public static final String ACTION_BRIGHTNESS_DOWN = PREFIX_ACTION + "BRIGHTNESS_DOWN";
     // status bar
@@ -82,6 +88,7 @@ public class FTD {
     public static final String ACTION_POWER_MENU = PREFIX_ACTION + "POWER_MENU";
     public static final String ACTION_SELECT_KEYBOARD = PREFIX_ACTION + "SWITCH_KEYBOARD";
     // touch event
+    public static final String ACTION_TAP = PREFIX_ACTION + "TAP" + SUFFIX_TOUCH_ACTION;
     public static final String ACTION_DOUBLE_TAP = PREFIX_ACTION + "DOUBLE_TAP" + SUFFIX_TOUCH_ACTION;
     public static final String ACTION_LONG_PRESS = PREFIX_ACTION + "LONG_PRESS" + SUFFIX_TOUCH_ACTION;
     public static final String ACTION_LONG_PRESS_FULL = PREFIX_ACTION + "LONG_PRESS_FULL" + SUFFIX_TOUCH_ACTION;
@@ -119,8 +126,11 @@ public class FTD {
         // key action
         //
         ENTRIES.put(ACTION_BACK, new Entry(R.string.action_back, R.drawable.ic_sysbar_back));
+        ENTRIES.put(ACTION_BACK_LONG, new Entry(R.string.action_back_long, R.drawable.ic_sysbar_back));
         ENTRIES.put(ACTION_HOME, new Entry(R.string.action_home, R.drawable.ic_sysbar_home));
+        ENTRIES.put(ACTION_HOME_LONG, new Entry(R.string.action_home_long, R.drawable.ic_sysbar_home));
         ENTRIES.put(ACTION_RECENTS, new Entry(R.string.action_recents, R.drawable.ic_sysbar_recent));
+        ENTRIES.put(ACTION_RECENTS_LONG, new Entry(R.string.action_recents_long, R.drawable.ic_sysbar_recent));
         ENTRIES.put(ACTION_FORWARD, new Entry(R.string.action_forward, R.drawable.ic_arrow_forward_white_24dp));
         ENTRIES.put(ACTION_REFRESH, new Entry(R.string.action_refresh, R.drawable.ic_refresh_white_24dp));
         ENTRIES.put(ACTION_SCROLL_UP_GLOBAL, new Entry(R.string.action_scroll_up, R.drawable.ic_vertical_align_top_white_24dp));
@@ -131,6 +141,10 @@ public class FTD {
         ENTRIES.put(ACTION_LOCK_SCREEN, new Entry(R.string.action_lock_screen, R.drawable.ic_phonelink_lock_white_24dp));
         ENTRIES.put(ACTION_LAST_APP, new Entry(R.string.action_last_app, R.drawable.ic_swap_horiz_white_24dp));
         ENTRIES.put(ACTION_MENU, new Entry(R.string.action_menu, R.drawable.ic_menu_white_24dp));
+        ENTRIES.put(ACTION_ASSIST, new Entry(R.string.action_assist, 0));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ENTRIES.put(ACTION_VOICE_ASSIST, new Entry(R.string.action_voice_assist, 0));
+        }
         ENTRIES.put(ACTION_BRIGHTNESS_UP, new Entry(R.string.action_brightness_up, R.drawable.ic_brightness_high_white_24dp));
         ENTRIES.put(ACTION_BRIGHTNESS_DOWN, new Entry(R.string.action_brightness_down, R.drawable.ic_brightness_low_white_24dp));
         //
@@ -146,6 +160,7 @@ public class FTD {
         ENTRIES.put(ACTION_SELECT_KEYBOARD, new Entry(R.string.action_select_keyboard, R.drawable.ic_keyboard_white_24dp));
         //
         // touch action
+        ENTRIES.put(ACTION_TAP, new Entry(R.string.action_tap, 0));
         ENTRIES.put(ACTION_DOUBLE_TAP, new Entry(R.string.action_double_tap, 0));
         ENTRIES.put(ACTION_LONG_PRESS, new Entry(R.string.action_long_press, 0));
         ENTRIES.put(ACTION_LONG_PRESS_FULL, new Entry(R.string.action_long_press_full, 0));
@@ -164,8 +179,11 @@ public class FTD {
         INTERNAL_ACTION_FILTER = new IntentFilter();
         // key action
         INTERNAL_ACTION_FILTER.addAction(ACTION_BACK);
+        INTERNAL_ACTION_FILTER.addAction(ACTION_BACK_LONG);
         INTERNAL_ACTION_FILTER.addAction(ACTION_HOME);
+        INTERNAL_ACTION_FILTER.addAction(ACTION_HOME_LONG);
         INTERNAL_ACTION_FILTER.addAction(ACTION_RECENTS);
+        INTERNAL_ACTION_FILTER.addAction(ACTION_RECENTS_LONG);
         INTERNAL_ACTION_FILTER.addAction(ACTION_FORWARD);
         INTERNAL_ACTION_FILTER.addAction(ACTION_REFRESH);
         INTERNAL_ACTION_FILTER.addAction(ACTION_SCROLL_UP_GLOBAL);
@@ -176,6 +194,10 @@ public class FTD {
         INTERNAL_ACTION_FILTER.addAction(ACTION_LOCK_SCREEN);
         INTERNAL_ACTION_FILTER.addAction(ACTION_LAST_APP);
         INTERNAL_ACTION_FILTER.addAction(ACTION_MENU);
+        INTERNAL_ACTION_FILTER.addAction(ACTION_ASSIST);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            INTERNAL_ACTION_FILTER.addAction(ACTION_VOICE_ASSIST);
+        }
         INTERNAL_ACTION_FILTER.addAction(ACTION_BRIGHTNESS_UP);
         INTERNAL_ACTION_FILTER.addAction(ACTION_BRIGHTNESS_DOWN);
         // status bar
@@ -265,14 +287,17 @@ public class FTD {
     private static void performTouchAction(@NonNull final View container,
                                            @NonNull String action,
                                            @NonNull final MotionEvent event) {
-        if (action.equals(ACTION_DOUBLE_TAP)) {
+        if (action.equals(ACTION_TAP)) {
+            injectMotionEvent(container, event, MotionEvent.ACTION_DOWN);
+            injectMotionEvent(container, event, MotionEvent.ACTION_UP);
+        } else if (action.equals(ACTION_DOUBLE_TAP)) {
             injectMotionEvent(container, event, MotionEvent.ACTION_DOWN);
             injectMotionEvent(container, event, MotionEvent.ACTION_UP);
             injectMotionEvent(container, event, MotionEvent.ACTION_DOWN);
             injectMotionEvent(container, event, MotionEvent.ACTION_UP);
         } else if (action.equals(ACTION_LONG_PRESS)) {
             injectMotionEventForLongPress(container, event, MotionEvent.ACTION_DOWN);
-            injectMotionEvent(container, event, MotionEvent.ACTION_CANCEL);
+            //injectMotionEvent(container, event, MotionEvent.ACTION_CANCEL);
         } else if (action.equals(ACTION_LONG_PRESS_FULL)) {
             injectMotionEvent(container, event, MotionEvent.ACTION_DOWN);
             container.postDelayed(new Runnable() {
@@ -590,7 +615,7 @@ public class FTD {
             wiggleTouchActionTap = getActionRecord(prefs, "key_wiggle_touch_action_tap");
             wiggleTouchActionLongPress = getActionRecord(prefs, "key_wiggle_touch_action_long_press");
             forceTouchScreenEnable = prefs.getBoolean("key_force_touch_screen_enable", false);
-            
+
             // Scratch Touch
             scratchTouchEnable = prefs.getBoolean("key_scratch_touch_enable", false);
             scratchTouchMagnification = Float.parseFloat(getStringToParse(prefs, "key_scratch_touch_magnification", "0.6"));

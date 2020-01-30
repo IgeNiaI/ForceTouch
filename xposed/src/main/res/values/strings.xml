@@ -45,8 +45,11 @@
     <!-- Tool -->
     <!-- key action -->
     <string name="action_back">Back</string>
+    <string name="action_back_long">Back Long</string>
     <string name="action_home">Home</string>
+    <string name="action_home_long">Home Long</string>
     <string name="action_recents">Recents</string>
+    <string name="action_recents_long">Recents Long</string>
     <string name="action_forward">Forward</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_volume_up">Volume Up</string>
@@ -55,6 +58,8 @@
     <string name="action_lock_screen">Lock Screen</string>
     <string name="action_last_app">Last App</string>
     <string name="action_menu">Menu</string>
+    <string name="action_assist">Assist</string>
+    <string name="action_voice_assist">Voice assist</string>
     <string name="action_brightness_up">Brightness Up</string>
     <string name="action_brightness_down">Brightness Down</string>
     <!-- status bar -->
@@ -65,6 +70,7 @@
     <string name="action_power_menu">Power Menu</string>
     <string name="action_select_keyboard">Select Keyboard</string>
     <!-- touch event -->
+    <string name="action_tap">Tap</string>
     <string name="action_double_tap">Double Tap</string>
     <string name="action_long_press">Long Press</string>
     <string name="action_long_press_full">Long Press (Fully Simulated)</string>

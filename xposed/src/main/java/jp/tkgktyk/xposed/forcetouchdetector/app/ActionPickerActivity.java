@@ -2,6 +2,7 @@ package jp.tkgktyk.xposed.forcetouchdetector.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -72,9 +73,9 @@ public class ActionPickerActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container,
-                        mForceTouch ?
-                                new ForceTouchToolPickerFragment() :
-                                new FloatingActionToolPickerFragment())
+                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
+                                new ForceTouchToolPickerFragment_Lollipop()
+                                : new ForceTouchToolPickerFragment())
                 .addToBackStack(null)
                 .commit();
     }
@@ -221,8 +222,11 @@ public class ActionPickerActivity extends AppCompatActivity {
         private static final String[] ACTION_LIST = {
                 // key
                 FTD.ACTION_BACK,
+                FTD.ACTION_BACK_LONG,
                 FTD.ACTION_HOME,
+                FTD.ACTION_HOME_LONG,
                 FTD.ACTION_RECENTS,
+                FTD.ACTION_RECENTS_LONG,
                 FTD.ACTION_FORWARD,
                 FTD.ACTION_REFRESH,
 //                FTD.ACTION_SCROLL_UP_GLOBAL,
@@ -233,6 +237,8 @@ public class ActionPickerActivity extends AppCompatActivity {
                 FTD.ACTION_LOCK_SCREEN,
                 FTD.ACTION_LAST_APP,
                 FTD.ACTION_MENU,
+                FTD.ACTION_ASSIST,
+                //FTD.ACTION_VOICE_ASSIST,
                 FTD.ACTION_BRIGHTNESS_UP,
                 FTD.ACTION_BRIGHTNESS_DOWN,
                 // status bar
@@ -243,6 +249,7 @@ public class ActionPickerActivity extends AppCompatActivity {
                 FTD.ACTION_POWER_MENU,
                 FTD.ACTION_SELECT_KEYBOARD,
                 // touch
+                FTD.ACTION_TAP,
                 FTD.ACTION_DOUBLE_TAP,
                 FTD.ACTION_LONG_PRESS,
                 FTD.ACTION_LONG_PRESS_FULL,
@@ -258,37 +265,45 @@ public class ActionPickerActivity extends AppCompatActivity {
         }
     }
 
-    public static class FloatingActionToolPickerFragment extends ToolPickerFragment {
+    public static class ForceTouchToolPickerFragment_Lollipop extends ToolPickerFragment {
         private static final String[] ACTION_LIST = {
                 // key
                 FTD.ACTION_BACK,
+                FTD.ACTION_BACK_LONG,
                 FTD.ACTION_HOME,
+                FTD.ACTION_HOME_LONG,
                 FTD.ACTION_RECENTS,
+                FTD.ACTION_RECENTS_LONG,
                 FTD.ACTION_FORWARD,
                 FTD.ACTION_REFRESH,
-                FTD.ACTION_SCROLL_UP_GLOBAL,
-                FTD.ACTION_SCROLL_DOWN_GLOBAL,
+//                FTD.ACTION_SCROLL_UP_GLOBAL,
+//                FTD.ACTION_SCROLL_DOWN_GLOBAL,
                 FTD.ACTION_VOLUME_UP,
                 FTD.ACTION_VOLUME_DOWN,
                 FTD.ACTION_SCREENSHOT,
                 FTD.ACTION_LOCK_SCREEN,
                 FTD.ACTION_LAST_APP,
                 FTD.ACTION_MENU,
+                FTD.ACTION_ASSIST,
+                FTD.ACTION_VOICE_ASSIST,
                 FTD.ACTION_BRIGHTNESS_UP,
                 FTD.ACTION_BRIGHTNESS_DOWN,
                 // status bar
                 FTD.ACTION_NOTIFICATIONS,
                 FTD.ACTION_QUICK_SETTINGS,
-                FTD.ACTION_SELECT_KEYBOARD,
                 // other
                 FTD.ACTION_KILL,
                 FTD.ACTION_POWER_MENU,
-//                FTD.ACTION_DOUBLE_TAP,
-//                FTD.ACTION_LONG_PRESS,
-//                FTD.ACTION_LONG_PRESS_FULL,
-//                FTD.ACTION_SCROLL_UP,
-//                FTD.ACTION_SCROLL_DOWN,
-//                FTD.ACTION_FLOATING_ACTION,
+                FTD.ACTION_SELECT_KEYBOARD,
+                // touch
+                FTD.ACTION_TAP,
+                FTD.ACTION_DOUBLE_TAP,
+                FTD.ACTION_LONG_PRESS,
+                FTD.ACTION_LONG_PRESS_FULL,
+                FTD.ACTION_SCROLL_UP,
+                FTD.ACTION_SCROLL_DOWN,
+                // local
+                FTD.ACTION_FLOATING_ACTION,
         };
 
         @Override
@@ -296,4 +311,5 @@ public class ActionPickerActivity extends AppCompatActivity {
             return ACTION_LIST;
         }
     }
+
 }

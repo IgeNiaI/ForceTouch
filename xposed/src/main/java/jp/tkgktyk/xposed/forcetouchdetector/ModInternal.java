@@ -26,6 +26,7 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Process;
 import android.os.SystemClock;
+import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 
@@ -59,10 +60,16 @@ public class ModInternal extends XposedModule {
                 //
                 if (action.equals(FTD.ACTION_BACK)) {
                     sendKeyEvent(KeyEvent.KEYCODE_BACK);
+                } else if (action.equals(FTD.ACTION_BACK_LONG)) {
+                    sendKeyEventLong(KeyEvent.KEYCODE_BACK);
                 } else if (action.equals(FTD.ACTION_HOME)) {
                     sendKeyEvent(KeyEvent.KEYCODE_HOME);
+                } else if (action.equals(FTD.ACTION_HOME_LONG)) {
+                    sendKeyEventLong(KeyEvent.KEYCODE_HOME);
                 } else if (action.equals(FTD.ACTION_RECENTS)) {
                     sendKeyEvent(KeyEvent.KEYCODE_APP_SWITCH);
+                } else if (action.equals(FTD.ACTION_RECENTS_LONG)) {
+                    sendKeyEventLong(KeyEvent.KEYCODE_APP_SWITCH);
                 } else if (action.equals(FTD.ACTION_FORWARD)) {
                     sendKeyEventAlt(KeyEvent.KEYCODE_DPAD_RIGHT);
                 } else if (action.equals(FTD.ACTION_REFRESH)) {
@@ -84,6 +91,10 @@ public class ModInternal extends XposedModule {
                     sendKeyEventAlt(KeyEvent.KEYCODE_TAB);
                 } else if (action.equals(FTD.ACTION_MENU)) {
                     sendKeyEvent(KeyEvent.KEYCODE_MENU);
+                } else if (action.equals(FTD.ACTION_ASSIST)) {
+                    sendKeyEvent(KeyEvent.KEYCODE_ASSIST);
+                } else if (action.equals(FTD.ACTION_VOICE_ASSIST)) {
+                    sendKeyEvent(KeyEvent.KEYCODE_VOICE_ASSIST);
                 } else if (action.equals(FTD.ACTION_BRIGHTNESS_UP)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                         sendKeyEvent(KeyEvent.KEYCODE_BRIGHTNESS_UP);
@@ -187,6 +198,25 @@ public class ModInternal extends XposedModule {
             }
             KeyEvent.changeAction(key, KeyEvent.ACTION_UP);
             instrumentation.sendKeySync(key);
+        }
+
+        private void sendKeyEventLong(final int code) {
+            new Thread() {
+                @Override
+                public void run() {
+                    Instrumentation instrumentation = new Instrumentation();
+
+                    long downTime = SystemClock.uptimeMillis();
+                    long eventTime = SystemClock.uptimeMillis() + 100;
+                    KeyEvent key = new KeyEvent(downTime, eventTime, KeyEvent.ACTION_DOWN, code, 1, 0,
+                            KeyCharacterMap.VIRTUAL_KEYBOARD, 0, KeyEvent.FLAG_LONG_PRESS);
+                    instrumentation.sendKeySync(key);
+
+                    key = new KeyEvent(downTime, eventTime, KeyEvent.ACTION_UP, code, 1, 0,
+                            KeyCharacterMap.VIRTUAL_KEYBOARD, 0, KeyEvent.FLAG_LONG_PRESS);
+                    instrumentation.sendKeySync(key);
+                }
+            }.start();
         }
 
         // Based on GravityBox[LP]

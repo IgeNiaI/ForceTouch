@@ -57,6 +57,7 @@ import jp.tkgktyk.xposed.forcetouchdetector.app.util.ActionInfo;
 public class ModForceTouch extends XposedModule {
     private static final String CLASS_DECOR_VIEW = "com.android.internal.policy.impl.PhoneWindow$DecorView";
     private static final String CLASS_DECOR_VIEW_M = "com.android.internal.policy.PhoneWindow$DecorView";
+    private static final String CLASS_DECOR_VIEW_N = "com.android.internal.policy.DecorView";
     private static final String CLASS_POPUP_WINDOW = "android.widget.PopupWindow";
     private static final String CLASS_POPUP_VIEW_CONTAINER = "android.widget.PopupWindow$PopupViewContainer";
     private static final String FIELD_DETECTORS = FTD.NAME + "_forceTouchDetectors";
@@ -188,7 +189,11 @@ public class ModForceTouch extends XposedModule {
         }
 
         Class<?> classDecorView;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            XposedHelpers.findAndHookMethod(ViewGroup.class, "dispatchTouchEvent",
+                    MotionEvent.class, dispatchTouchEvent);
+            classDecorView = XposedHelpers.findClass(CLASS_DECOR_VIEW_N, null);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             XposedHelpers.findAndHookMethod(ViewGroup.class, "dispatchTouchEvent",
                     MotionEvent.class, dispatchTouchEvent);
             classDecorView = XposedHelpers.findClass(CLASS_DECOR_VIEW_M, null);
@@ -776,7 +781,7 @@ public class ModForceTouch extends XposedModule {
             mAbsoluteDetector = new AbsoluteDetector(this);
             onSettingsLoaded(settings);
         }
-        
+
         @Override
         public boolean onRelativeTouch(float x, float y, float startX, float startY) {
             return false;
@@ -833,7 +838,7 @@ public class ModForceTouch extends XposedModule {
             }
             return false;
         }
-        
+
         @Override
         public boolean onForceTap(float x, float y) {
             performAction(mSettings.forceTouchActionTap, x, y, "large tap");
@@ -877,7 +882,7 @@ public class ModForceTouch extends XposedModule {
             }
             return false;
         }
-        
+
         @Override
         public boolean onForceTap(float x, float y) {
             performAction(mSettings.knuckleTouchActionTap, x, y, "knuckle tap");
