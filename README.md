@@ -1,3 +1,5 @@
+This repository contains fixes for module crash on Android 7 and above.
+
 # Touch Pressure/Size Gesture
 
 ## Introduction
